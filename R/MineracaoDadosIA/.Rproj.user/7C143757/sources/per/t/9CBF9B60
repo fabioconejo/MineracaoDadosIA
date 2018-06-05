@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1523402134495.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "992512902",
+    "id" : "9CBF9B60",
+    "lastKnownWriteTime" : 1527813454,
+    "last_content_update" : 1527813454894,
+    "path" : "~/GitHub/MineracaoDadosIA/R/MineracaoDadosIA/PreProcessamento.R",
+    "project_path" : "PreProcessamento.R",
+    "properties" : {
+        "cursorPosition" : "21,32",
+        "scrollLine" : "14",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

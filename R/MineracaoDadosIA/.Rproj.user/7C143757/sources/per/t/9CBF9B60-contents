@@ -1,0 +1,56 @@
+#Instalar a package tm. Descomente a linha abaixo na primeira vez que for rodar o programa.
+#install.packages("tm")
+
+##Incluir o pacote para uso
+require("tm")
+
+#Local (pasta) com os documentos para processamento
+folderdir="C:/Users/fabio/Documents/GitHub/MineracaoDadosIA/Corporas/1. Newsgroups20/1. Textos/7. Todos"
+cat (folderdir)
+
+#Carregamento dos arquivos texto
+CorpusVar <- Corpus(DirSource(folderdir, encoding = "UTF-8",
+                              recursive =FALSE, ignore.case = FALSE, mode = "text"),
+                  readerControl=
+                      list
+                    (reader=readPlain,language="en"))
+
+#Retirando numeros
+CorpusVar <- tm_map(CorpusVar, removeNumbers)
+
+#Convertendo o texto para minusculas
+CorpusVar <- tm_map (CorpusVar, content_transformer(tolower))
+
+#Removendo pontuacao (1)
+CorpusVar <- tm_map (CorpusVar, removePunctuation)
+
+#Retirando espacos em branco desnecessarios
+CorpusVar <- tm_map (CorpusVar, stripWhitespace)
+
+#Lista de Stop Words
+myStopWords <- c("i","me","my","myself","we","our","ours","ourselves","you","your","yours","yourself","yourselves","he","him","his","himself","she","her","hers","herself","it","its","itself","they","them","their","theirs","themselves","what","which","who","whom","this","that","these","those","am","is","are","was","were","be","been","being","have","has","had","having","do","does","did","doing","a","an","the","and","but","if","or","because","as","until","while","of","at","by","for","with","about","against","between","into","through","during","before","after","above","below","to","from","up","down","in","out","on","off","over","under","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","other","some","such","no","nor","not","only","own","same","so","than","too","very","s","t","can","will","just","don","should","now","d","ll","m","o","re","ve","y","ain","aren","couldn","didn","doesn","hadn","hasn","haven","isn","ma","mightn","mustn","needn","shan","shouldn","wasn","weren","won","wouldn")
+
+#Removendo stopwords
+CorpusVar <- tm_map(CorpusVar, removeWords, myStopWords)
+
+#Aplicando o Stemming / reduz palavaras ao radicais, usando algoritmo de Potter
+CorpusVar <- tm_map(CorpusVar, stemDocument)
+
+#Transformando o conjunto de dados em uma matriz de Termos x Documentos. (Termos nas linhas e documentos nas colunas)
+tdm <- TermDocumentMatrix (CorpusVar, control = list
+                           (weighting = function(x) weightBin(x), minWordLength=2, minDocFreq=1))
+
+#tdm <- TermDocumentMatrix (CorpusVar, control = list
+#                           (weighting = function(x) weightTf(x), minWordLength=2, minDocFreq=1))
+
+
+#tdm <- TermDocumentMatrix (CorpusVar, control = list
+#                           (weighting = function(x) weightTfIdf(x, normalize = TRUE), minWordLength=2, minDocFreq=1))
+
+#Inspecionando a matriz para visualizacao e opcao de copiar os dados do console
+inspect(tdm)
+
+#Saida dos dados em arquivo separado por virgula
+m <- as.matrix(tdm)
+dim(m)
+write.csv(m, file ="C:/Users/fabio/Documents/GitHub/MineracaoDadosIA/Corporas/1. Newsgroups20/2. Pré-Processados/binary.csv")
